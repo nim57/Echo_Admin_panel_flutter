@@ -1,4 +1,7 @@
+import 'package:echo_admin_panel_flutter/common/widgets/layouts/headers/header.dart';
 import 'package:flutter/material.dart';
+
+import '../../layouts/sidebar/sidebar.dart';
 
 class TabletLayout extends StatelessWidget {
   const TabletLayout({super.key, this.body});
@@ -8,8 +11,8 @@ class TabletLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(),
-      appBar: AppBar(),
+      drawer: const ESidebar(),
+      appBar: EHeader(),
       body: body ?? const SizedBox(),
     );
   }

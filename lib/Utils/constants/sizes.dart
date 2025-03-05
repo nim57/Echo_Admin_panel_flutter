@@ -59,6 +59,8 @@ class ESizes {
 
 // Display Sizes
 
-  static const double desktopScreenSize = 1920.0;
-  static const double tabletScreenSize = 768.0;
+  static const int desktopScreenSize = 1336;
+  static const int tabletScreenSize = 768;
+  static const int mobileScreenSize = 360;
+  static const int customScreenSize = 1100;
 }

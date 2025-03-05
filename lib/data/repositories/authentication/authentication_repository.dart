@@ -6,6 +6,7 @@ import '../../../Utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../Utils/exceptions/firebase_exceptions.dart';
 import '../../../Utils/exceptions/format_excptions.dart';
 import '../../../Utils/exceptions/platform_exceptions.dart';
+import '../../../routes/route.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -24,6 +25,19 @@ class AuthenticationRepository extends GetxController {
   @override
   void onReady() {
     _auth.setPersistence(Persistence.LOCAL);
+  }
+
+  // Function to determine the relevant screen and redirect accordingly.
+  void screenRedirect() async {
+    final user = _auth.currentUser;
+
+    // If the user is logged in
+    if (user != null) {
+      // Navigate to the Home
+      Get.offAllNamed(ERoutes.dashboard);
+    } else {
+      Get.offAllNamed(ERoutes.login);
+    }
   }
 
   /// Login
@@ -75,6 +89,22 @@ class AuthenticationRepository extends GetxController {
   /// Re Authentication User
 
   /// Logout User
+  Future<void> logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Get.offAllNamed(ERoutes.login);
+    } on FirebaseAuthException catch (e) {
+      throw FirebaseAuthException(code: e.code, message: e.message);
+    } on FirebaseException catch (e) {
+      throw FirebaseAuthException(code: e.code, message: e.message);
+    } on FormatException catch (_) {
+      throw FormatException('Invalid format');
+    } on PlatformException catch (e) {
+      throw PlatformException(code: e.code, message: e.message);
+    } catch (e) {
+      throw 'Something went wrong. Please try again later.';
+    }
+  }
 
   /// Delete User
 }

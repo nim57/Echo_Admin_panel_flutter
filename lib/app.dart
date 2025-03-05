@@ -4,7 +4,6 @@ import 'package:echo_admin_panel_flutter/routes/app_rout.dart';
 import 'package:echo_admin_panel_flutter/routes/route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'utils/constants/text_strings.dart';
 
 class App extends StatelessWidget {

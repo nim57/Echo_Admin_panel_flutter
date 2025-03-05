@@ -1,4 +1,4 @@
-import 'package:echo_admin_panel_flutter/features/authentication/screens/login/login.dart';
+import 'package:echo_admin_panel_flutter/features/authentication/screens/forget_password/forget_password.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -76,7 +76,7 @@ class ELoginForm extends StatelessWidget {
 
                   /// Forget password
                   TextButton(
-                      onPressed: () => Get.to(() => LoginScreen()),
+                      onPressed: () => Get.to(() => ForgetPasswordScreen()),
                       child: const Text(ETexts.forgotPassword)),
                 ],
               ),
@@ -85,13 +85,13 @@ class ELoginForm extends StatelessWidget {
               // Sign in Button
               SizedBox(
                 width: double.infinity,
-                // child: ElevatedButton(
-                //    onPressed: () => controller.emailAndPasswordSignIn(),
-                //     child: const Text(ETexts.signin)),
-
                 child: ElevatedButton(
-                    onPressed: () => controller.registerAdmin(),
+                    onPressed: () => controller.emailAndPasswordSignIn(),
                     child: const Text(ETexts.signin)),
+
+                // child: ElevatedButton(
+                //      onPressed: () => controller.registerAdmin(),
+                //      child: const Text(ETexts.signin)),
               ),
 
               const SizedBox(height: ESizes.spaceBtwInputFields),
