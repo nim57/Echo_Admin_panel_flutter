@@ -3,6 +3,8 @@ import 'package:echo_admin_panel_flutter/features/home/dashboard/responsive_scre
 import 'package:echo_admin_panel_flutter/features/home/dashboard/responsive_screen/dashboard_screen_mobile.dart';
 import 'package:flutter/material.dart';
 
+import 'responsive_screen/dashboart_tablet_Svcreen.dart';
+
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
@@ -11,6 +13,7 @@ class DashboardScreen extends StatelessWidget {
     return ESiteTemplate(
       useLayout: false,
       desktop: DashboardScreenDesktop(),
+      tablet: DashboardTabScreen(),
       mobile: DashboardScreenMobile(),
     );
   }

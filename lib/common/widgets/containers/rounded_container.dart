@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 
 class ERoundedContainer extends StatelessWidget {
@@ -11,10 +10,11 @@ class ERoundedContainer extends StatelessWidget {
       this.redius = ESizes.cordRadiusLg,
       this.child,
       this.showBoarder = false,
-      this.boaderColor = EColor.borderPrimary,
-      this.backgroundColor = EColor.white,
+      this.boaderColor = const Color.fromARGB(255, 0, 0, 0),
+      this.backgroundColor = const Color.fromARGB(255, 246, 245, 245),
       this.padding,
-      this.margin});
+      this.margin,
+      this.onTap});
 
   final double? width;
   final double? height;
@@ -25,19 +25,23 @@ class ERoundedContainer extends StatelessWidget {
   final Color backgroundColor;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      padding: padding,
-      margin: margin,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(redius),
-        border: showBoarder ? Border.all(color: boaderColor) : null,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: width,
+        height: height,
+        padding: padding,
+        margin: margin,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(redius),
+          border: showBoarder ? Border.all(color: boaderColor) : null,
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }

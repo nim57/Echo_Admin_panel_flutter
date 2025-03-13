@@ -31,7 +31,7 @@ class UserController extends GetxController {
       loading.value = false;
       EFullScreenLoader.stopLoading();
       ELoaders.errorsnackBar(
-          title: 'Somthing want worng', message: e.toString());
+          title: 'Somthing want worng eeeeeee', message: e.toString());
       return UserModel.empty();
     }
   }

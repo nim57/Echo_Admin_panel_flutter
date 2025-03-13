@@ -1,7 +1,6 @@
 import 'package:echo_admin_panel_flutter/common/widgets/layouts/sidebar/menu/sidebar_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../../../../../Utils/constants/colors.dart';
 import '../../../../../Utils/constants/sizes.dart';

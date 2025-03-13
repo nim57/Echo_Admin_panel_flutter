@@ -90,7 +90,7 @@ class ELoginForm extends StatelessWidget {
                     child: const Text(ETexts.signin)),
 
                 // child: ElevatedButton(
-                //      onPressed: () => controller.registerAdmin(),
+                //       onPressed: () => controller.registerAdmin(),
                 //      child: const Text(ETexts.signin)),
               ),
 

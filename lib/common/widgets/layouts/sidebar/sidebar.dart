@@ -2,9 +2,7 @@ import 'package:echo_admin_panel_flutter/Utils/constants/colors.dart';
 import 'package:echo_admin_panel_flutter/Utils/constants/image_Strings.dart';
 import 'package:echo_admin_panel_flutter/Utils/constants/sizes.dart';
 import 'package:echo_admin_panel_flutter/common/widgets/images/i_circularImage.dart';
-import 'package:echo_admin_panel_flutter/common/widgets/layouts/sidebar/menu/menu_item.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 
 class ESidebar extends StatelessWidget {
   const ESidebar({super.key});

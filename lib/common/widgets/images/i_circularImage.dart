@@ -3,7 +3,6 @@ import 'dart:html' as html;
 import 'dart:io' as io;
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 

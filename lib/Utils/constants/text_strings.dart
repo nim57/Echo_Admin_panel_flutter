@@ -13,8 +13,8 @@ class ETexts {
   static const String onBoardingTitle3 = "Do Good Deal";
 
   // Admin Default Credintials
-  static const String adminEmail = 'admin@example.com';
-  static const String adminPassword = 'adminPassword';
+  static const String adminEmail = 'admin@123gmail.com';
+  static const String adminPassword = 'admin1234s';
 
   static const String onBoardingSubTitle1 =
       "Welcome to Echo Review mobile app see reviews and get an idea for about";
