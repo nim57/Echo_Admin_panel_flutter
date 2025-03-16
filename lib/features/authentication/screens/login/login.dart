@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ESiteTemplate(
-      useLayout: false,
+      useLayout: true,
       desktop: LoginDesktopTable(),
       mobile: LoginScreenMobile(),
     );

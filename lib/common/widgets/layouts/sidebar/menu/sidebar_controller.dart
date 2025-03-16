@@ -7,6 +7,13 @@ class SidebarController extends GetxController {
   final activeItem = ERoutes.dashboard.obs;
   final hoverItem = ''.obs;
 
+  @override
+  void onInit() {
+    // Set dashboard as the default selected route
+    activeItem.value = ERoutes.dashboard;
+    super.onInit();
+  }
+
   void changeActiveItem(String route) => activeItem.value = route;
 
   void changeHoverItem(String route) {

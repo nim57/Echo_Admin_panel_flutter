@@ -19,21 +19,23 @@ class EMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final menuController = Get.put(SidebarController());
+    final menuController = Get.find<SidebarController>();
     return InkWell(
       onTap: () => menuController.menuOnTap(route),
       onHover: (hovering) => hovering
-          ? menuController.changeActiveItem(route)
-          : menuController.changeActiveItem(''),
+          ? menuController.changeHoverItem(route)
+          : menuController.changeHoverItem(''),
       child: Obx(
         () => Padding(
           padding: const EdgeInsets.symmetric(vertical: ESizes.xs),
           child: Container(
             decoration: BoxDecoration(
-                color: menuController.isHovering(route) ||
-                        menuController.isHovering(route)
-                    ? EColor.primaryColor
-                    : Colors.transparent,
+                color: menuController.isActive(route)
+                    ? Colors.blue
+                        .withOpacity(0.2) // Blue background for active item
+                    : menuController.isHovering(route)
+                        ? Colors.grey.withOpacity(0.1) // Subtle hover effect
+                        : Colors.transparent,
                 borderRadius: BorderRadius.circular(ESizes.cardRadiusNd)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,43 +47,29 @@ class EMenuItem extends StatelessWidget {
                     bottom: ESizes.md,
                     right: ESizes.md,
                   ),
-                  child: menuController.isActive(route)
-                      ? Icon(
-                          icon,
-                          size: 22,
-                          color: EColor.white,
-                        )
-                      : Icon(
-                          icon,
-                          size: 22,
-                          color: menuController.isHovering(route)
-                              ? EColor.white
-                              : EColor.darkGrey,
-                        ),
+                  child: Icon(
+                    icon,
+                    size: 22,
+                    color: menuController.isActive(route)
+                        ? Colors.blue // Blue icon for active item
+                        : menuController.isHovering(route)
+                            ? Colors.white
+                            : EColor.darkGrey,
+                  ),
                 ),
 
                 // Text
-                if (menuController.isHovering(route) ||
-                    menuController.isActive(route))
-                  Flexible(
-                    child: Text(
-                      itemName,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .apply(color: EColor.white),
-                    ),
-                  )
-                else
-                  Flexible(
-                    child: Text(
-                      itemName,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .apply(color: EColor.darkGrey),
-                    ),
+                Flexible(
+                  child: Text(
+                    itemName,
+                    style: Theme.of(context).textTheme.bodyMedium!.apply(
+                        color: menuController.isActive(route)
+                            ? Colors.blue // Blue text for active item
+                            : menuController.isHovering(route)
+                                ? Colors.white
+                                : EColor.darkGrey),
                   ),
+                ),
               ],
             ),
           ),
