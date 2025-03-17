@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../Utils/constants/sizes.dart';
-import '../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../routes/route.dart';
-import '../../../category/all_category/widgets/table_header.dart';
-import '../../../dashboard/widgets/breadcrumb_with_heading.dart';
-import '../../table/data_table.dart';
+import '../../../../Utils/constants/sizes.dart';
+import '../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../routes/route.dart';
+import '../../category/all_category/widgets/table_header.dart';
+import '../../dashboard/widgets/breadcrumb_with_heading.dart';
+import '../tables/data_table.dart';
 
-class UserManageDesktopScreen extends StatelessWidget {
-  const UserManageDesktopScreen({super.key});
+class ManagePostDesktop extends StatelessWidget {
+  const ManagePostDesktop({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +22,8 @@ class UserManageDesktopScreen extends StatelessWidget {
           children: [
             // Breadurumbs
             const EBreadcrumbsWithHeading(
-              heading: 'Manage Users',
-              breadcrumbItems: ['Manage Users'],
+              heading: 'Manage Post',
+              breadcrumbItems: ['Manage Post'],
               returnToPreviousScreen: false,
             ),
             const SizedBox(
@@ -45,7 +45,7 @@ class UserManageDesktopScreen extends StatelessWidget {
                   ),
 
                   // Table
-                  MamageUserTable(),
+                  MamagePostTable(),
                 ],
               ),
             )

@@ -6,9 +6,9 @@ import 'package:echo_admin_panel_flutter/common/widgets/layouts/headers/i_rounde
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../widgets/pending_table_button.dart';
+import '../../category/all_category/table/Table_action_icon_button.dart';
 
-class PendingItemRows extends DataTableSource {
+class MamagePostRows extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     return DataRow2(cells: [
@@ -16,7 +16,7 @@ class PendingItemRows extends DataTableSource {
         // ID
         Expanded(
           child: Text(
-            "Item ID",
+            "Post ID",
             style: Theme.of(Get.context!)
                 .textTheme
                 .bodyLarge!
@@ -30,7 +30,7 @@ class PendingItemRows extends DataTableSource {
         // Name
         Expanded(
           child: Text(
-            "Cat_ID",
+            "User ID",
             style: Theme.of(Get.context!)
                 .textTheme
                 .bodyLarge!
@@ -44,7 +44,21 @@ class PendingItemRows extends DataTableSource {
         // Name
         Expanded(
           child: Text(
-            "Item Name",
+            "Post Type",
+            style: Theme.of(Get.context!)
+                .textTheme
+                .bodyLarge!
+                .apply(color: EColor.primaryColor),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+      DataCell(
+        // Name
+        Expanded(
+          child: Text(
+            "Username",
             style: Theme.of(Get.context!)
                 .textTheme
                 .bodyLarge!
@@ -72,7 +86,7 @@ class PendingItemRows extends DataTableSource {
         // Name
         Expanded(
           child: Text(
-            "Discription",
+            "Title",
             style: Theme.of(Get.context!)
                 .textTheme
                 .bodyLarge!
@@ -86,7 +100,7 @@ class PendingItemRows extends DataTableSource {
         // Name
         Expanded(
           child: Text(
-            "Email",
+            "Profile Visibility",
             style: Theme.of(Get.context!)
                 .textTheme
                 .bodyLarge!
@@ -96,48 +110,7 @@ class PendingItemRows extends DataTableSource {
           ),
         ),
       ),
-      DataCell(
-        // Name
-        Expanded(
-          child: Text(
-            "Web Site",
-            style: Theme.of(Get.context!)
-                .textTheme
-                .bodyLarge!
-                .apply(color: EColor.primaryColor),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-      DataCell(
-        // Name
-        Expanded(
-          child: Text(
-            "Phone Number",
-            style: Theme.of(Get.context!)
-                .textTheme
-                .bodyLarge!
-                .apply(color: EColor.primaryColor),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-      DataCell(
-        // Name
-        Expanded(
-          child: Text(
-            "Map Loaction",
-            style: Theme.of(Get.context!)
-                .textTheme
-                .bodyLarge!
-                .apply(color: EColor.primaryColor),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
+      DataCell(Text(DateTime.now().toString())),
       DataCell(
         Row(
           children: [
@@ -171,25 +144,11 @@ class PendingItemRows extends DataTableSource {
           ],
         ),
       ),
-      DataCell(
-        // Name
-        Expanded(
-          child: Text(
-            "Branch Have or Not",
-            style: Theme.of(Get.context!)
-                .textTheme
-                .bodyLarge!
-                .apply(color: EColor.primaryColor),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-      DataCell(Text(DateTime.now().toString())),
-      DataCell(
-        PendingActionButton(
+      DataCell(ETableActionButton(
+        delete: true,
+        edit: false,
+        view: false,
         onDeletePressed: () {},
-        onacceptPressed: () {},
       )),
     ]);
   }

@@ -1,6 +1,7 @@
 import 'package:echo_admin_panel_flutter/features/authentication/screens/forget_password/forget_password.dart';
 import 'package:echo_admin_panel_flutter/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:echo_admin_panel_flutter/features/home/category/edit_category/Edit_category.dart';
+import 'package:echo_admin_panel_flutter/features/home/mamage_post/manage_post.dart';
 import 'package:echo_admin_panel_flutter/features/home/manage_items/add%20Item/item_Add.dart';
 import 'package:echo_admin_panel_flutter/features/home/manage_items/edit_item/item_Edit.dart';
 import 'package:echo_admin_panel_flutter/features/home/manage_items/pending_items/pending_item.dart';
@@ -71,6 +72,11 @@ class EAppRoute {
     GetPage(
         name: ERoutes.pendingItem,
         page: () => const PendingItemScreen(),
+        middlewares: [ERouteMiddleware()]),
+
+    GetPage(
+        name: ERoutes.managePost,
+        page: () => const ManagePostScreen(),
         middlewares: [ERouteMiddleware()]),
   ];
 }

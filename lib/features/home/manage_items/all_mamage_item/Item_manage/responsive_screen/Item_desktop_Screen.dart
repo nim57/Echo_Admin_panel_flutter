@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Utils/constants/sizes.dart';
-import '../../../../../../Utils/device/device_utility.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../routes/route.dart';
 import '../../../../category/all_category/widgets/table_header.dart';

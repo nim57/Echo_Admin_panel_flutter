@@ -76,4 +76,6 @@ class ELoaders {
       icon: const Icon(Iconsax.warning_2, color: EColor.white),
     );
   }
+
+  static void successSnackBar({required String title, required String message}) {}
 }   // SnackBar

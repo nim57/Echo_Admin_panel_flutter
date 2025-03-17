@@ -78,6 +78,12 @@ class ESidebar extends StatelessWidget {
                       icon: Iconsax.menu,
                       itemName: 'Manage Items',
                     ),
+
+                    EMenuItem(
+                      route: ERoutes.managePost,
+                      icon: Iconsax.edit,
+                      itemName: 'Manage Post',
+                    ),
                   ],
                 ),
               )

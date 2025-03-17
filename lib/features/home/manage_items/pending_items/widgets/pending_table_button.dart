@@ -1,7 +1,5 @@
-import 'package:echo_admin_panel_flutter/Utils/constants/colors.dart';
 import 'package:echo_admin_panel_flutter/Utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 
 class PendingActionButton extends StatelessWidget {
   const PendingActionButton(

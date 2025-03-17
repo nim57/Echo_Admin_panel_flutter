@@ -6,22 +6,31 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+import 'features/home/category/create_categort/cload_cods/category_controller.dart';
+import 'features/home/category/create_categort/cload_cods/category_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-  // Ensure that widge are intialized
+  // Ensure widgets are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Getx Local Starage
-   await GetStorage.init();
-  // Remove # sign from url
+  // Initialize Local Storage
+  await GetStorage.init();
+
+  // Remove # sign from URL
   setPathUrlStrategy();
 
-  // Initialize Firebase & Authentication Repository
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((_) => Get.put(AuthenticationRepository()));
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Initialize Repositories
+  Get.put(AuthenticationRepository());
+  Get.put(CategoryRepository()); // Add category repository
+  // Initialize controllers
+  Get.put(CategoryController());
 
   // Main App Starts here ...
-
   runApp(const App());
 }

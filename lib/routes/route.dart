@@ -15,10 +15,14 @@ class ERoutes {
   static const editItem = '/editItem';
   static const pendingItem = '/PeingItems';
 
+  /// Manage Post
+  static const managePost = '/managePost';
+
   static List sidebarMenuItems = [
     dashboard,
     user_manage,
     category,
     manageItems,
+    managePost
   ];
 }
