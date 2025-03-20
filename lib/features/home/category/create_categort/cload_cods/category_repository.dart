@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../../../../Utils/exceptions/firebase_exceptions.dart';
 import '../../../../../Utils/exceptions/format_excptions.dart';
 import '../../../../../Utils/exceptions/platform_exceptions.dart';
@@ -13,16 +11,13 @@ import 'model/category_model.dart'; // Assuming your Category model is here
 class CategoryRepository extends GetxController {
   static CategoryRepository get instance => Get.find();
 
-   final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseStorage storage = FirebaseStorage.instance;
 
   /// Save category to Firestore
   Future<void> saveCategory(Category category) async {
     try {
-      await db
-          .collection('categories')
-          .doc(category.id)
-          .set(category.toJson());
+      await db.collection('categories').doc(category.id).set(category.toJson());
     } on FirebaseException catch (e) {
       throw EFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -117,9 +112,10 @@ class CategoryRepository extends GetxController {
     required String fileName,
   }) async {
     try {
-      final Reference ref = storage.ref()
-        .child('category_images')
-        .child('${DateTime.now().millisecondsSinceEpoch}_$fileName');
+      final Reference ref = storage
+          .ref()
+          .child('category_images')
+          .child('${DateTime.now().millisecondsSinceEpoch}_$fileName');
 
       final UploadTask uploadTask = ref.putData(
         imageBytes,
@@ -134,7 +130,6 @@ class CategoryRepository extends GetxController {
       throw Exception('Image upload failed: ${e.toString()}');
     }
   }
-
 
   /// Update specific category fields
   Future<void> updateCategoryFields({

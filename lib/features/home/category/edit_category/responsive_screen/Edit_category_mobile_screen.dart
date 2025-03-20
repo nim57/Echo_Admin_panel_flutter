@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../Utils/constants/sizes.dart';
 import '../../../../../routes/route.dart';
@@ -22,7 +23,7 @@ class EditCategoryMobileScreen extends StatelessWidget {
               SizedBox(height: ESizes.spaceBtwSections,),
 
               // Form 
-              EditCategoryForm(),
+              EditCategoryForm(categoryId: Get.arguments as String,),
             ],
           ),
         ),

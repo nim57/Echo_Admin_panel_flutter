@@ -37,6 +37,7 @@ dependencies:
   fl_chart: ^0.70.2
   data_table_2: ^2.5.18
   url_strategy: 0.2.0
+  numberpicker: ^2.1.2
   
   # State Management
   get: ^4.7.2
@@ -51,6 +52,12 @@ dependencies:
   # Icons
   cupertino_icons: ^1.0.8
   iconsax: ^0.0.8
+
+  # google MAp 
+  google_maps_flutter: ^2.11.0
+  geolocator: ^13.0.3
+  geocoding: ^3.0.0
+  permission_handler: ^11.4.0
 
 dev_dependencies:
   flutter_test:

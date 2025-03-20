@@ -104,4 +104,4 @@ class _ConversionException implements Exception {
   const _ConversionException(this.message);
   @override
   String toString() => 'CategoryConversionException: $message';
-}
+} 

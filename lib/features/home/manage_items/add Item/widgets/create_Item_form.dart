@@ -1,275 +1,242 @@
-import 'package:echo_admin_panel_flutter/Utils/constants/image_Strings.dart';
-import 'package:echo_admin_panel_flutter/Utils/constants/sizes.dart';
-import 'package:echo_admin_panel_flutter/Utils/validators/validation.dart';
-import 'package:echo_admin_panel_flutter/common/widgets/containers/rounded_container.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../Utils/constants/image_Strings.dart';
+import '../../../../../Utils/constants/sizes.dart';
+import '../../../../../Utils/validators/validation.dart';
+import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../common/widgets/images/i_circularImage.dart';
 import '../../../category/create_categort/widgets/image_upload.dart';
+import '../backend/item_controller.dart';
+import '../backend/map_picker.dart';
 
-class CreateItemForm extends StatefulWidget {
-  const CreateItemForm({super.key});
-
-  @override
-  State<CreateItemForm> createState() => _CreateItemFormState();
-}
-
-class _CreateItemFormState extends State<CreateItemForm> {
-  // Dropdown options for Category ID
-  final List<String> categoryOptions = [
-    'Category 1',
-    'Category 2',
-    'Category 3'
-  ];
-  String selectedCategory = 'Category 1';
-
-  // For branch availability
-  final List<String> branchOptions = ['Yes', 'No'];
-  String branchAvailable = 'Yes';
-
-  // Current date for item creation
-  final String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+class CreateItemForm extends StatelessWidget {
+  CreateItemForm({super.key}) {
+    Get.put(ItemController()).fetchCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<ItemController>();
+    final formKey = GlobalKey<FormState>();
+
     return ERoundedContainer(
       width: 500,
-      padding: EdgeInsets.all(ESizes.defaultSpace),
+      padding: const EdgeInsets.all(ESizes.defaultSpace),
       child: SingleChildScrollView(
         child: Form(
+          key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// Heading
-              SizedBox(
-                height: ESizes.sm,
-              ),
+              // Heading
+              Text('Create New Item',
+                  style: Theme.of(context).textTheme.headlineMedium),
+              const SizedBox(height: ESizes.spaceBtwSections),
 
-              SizedBox(
-                height: ESizes.spaceBtwSections,
-              ),
+              // Category ID Dropdown
+              Obx(() => DropdownButtonFormField<String>(
+                    value: controller.categoryIds.isNotEmpty
+                        ? controller.categoryIds.first
+                        : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Category ID',
+                      prefixIcon: Icon(Iconsax.category),
+                      border: OutlineInputBorder(),
+                    ),
+                    items: controller.categoryIds.map((String id) {
+                      return DropdownMenuItem<String>(
+                        value: id,
+                        child: Text(id),
+                      );
+                    }).toList(),
+                    onChanged: (value) =>
+                        controller.categoryIdController.text = value ?? '',
+                    validator: (value) =>
+                        EValidator.validateEmptyText('Category ID', value),
+                  )),
+              const SizedBox(height: ESizes.spaceBtwInputFields),
 
-              /// Category ID Dropdown
-              Text('Category ID', style: Theme.of(context).textTheme.bodyLarge),
-              SizedBox(height: ESizes.spaceBtwItems / 2),
-              DropdownButtonFormField<String>(
-                value: selectedCategory,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Iconsax.category),
-                  border: OutlineInputBorder(),
-                ),
-                items: categoryOptions.map((String category) {
-                  return DropdownMenuItem<String>(
-                    value: category,
-                    child: Text(category),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedCategory = newValue!;
-                  });
-                },
-              ),
-
-              SizedBox(
-                height: ESizes.spaceBtwInputFields,
-              ),
-
-              /// Item Name
+              // Item Name
               TextFormField(
+                controller: controller.nameController,
                 validator: (value) =>
-                    EValidator.validateEmptyText('Name', value),
-                decoration: InputDecoration(
+                    EValidator.validateEmptyText('Item Name', value),
+                decoration: const InputDecoration(
                   labelText: 'Item Name',
                   prefixIcon: Icon(Iconsax.shopping_cart),
                 ),
               ),
+              const SizedBox(height: ESizes.spaceBtwInputFields),
 
-              SizedBox(
-                height: ESizes.spaceBtwInputFields,
-              ),
-
-              /// Tags
+              // Tags
               TextFormField(
+                controller: controller.tagsController,
                 validator: (value) =>
                     EValidator.validateEmptyText('Tags', value),
-                decoration: InputDecoration(
-                  labelText: '# Tags',
+                decoration: const InputDecoration(
+                  labelText: 'Tags (comma separated)',
                   prefixIcon: Icon(Iconsax.tag),
                 ),
               ),
+              const SizedBox(height: ESizes.spaceBtwInputFields),
 
-              SizedBox(
-                height: ESizes.spaceBtwInputFields,
-              ),
-
-              /// Description
-              Text('Description', style: Theme.of(context).textTheme.bodyLarge),
-              SizedBox(height: ESizes.spaceBtwItems / 2),
+              // Description
               TextFormField(
+                controller: controller.descriptionController,
                 validator: (value) =>
                     EValidator.validateEmptyText('Description', value),
                 maxLines: 5,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
+                  labelText: 'Description',
                   hintText: 'Enter item description...',
                   border: OutlineInputBorder(),
                 ),
               ),
+              const SizedBox(height: ESizes.spaceBtwInputFields),
 
-              SizedBox(
-                height: ESizes.spaceBtwInputFields,
-              ),
-
-              /// Email
+              // Email
               TextFormField(
-                validator: (value) => EValidator.validateEmail(value),
-                decoration: InputDecoration(
+                controller: controller.emailController,
+                validator: EValidator.validateEmail,
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   prefixIcon: Icon(Iconsax.message),
                 ),
               ),
+              const SizedBox(height: ESizes.spaceBtwInputFields),
 
-              SizedBox(
-                height: ESizes.spaceBtwInputFields,
-              ),
-
-              /// Website URL
+              // Website URL
               TextFormField(
-                validator: (value) =>
-                    EValidator.validateEmptyText('Website URL', value),
-                decoration: InputDecoration(
+                controller: controller.websiteController,
+                validator: EValidator.validateWebsite,
+                decoration: const InputDecoration(
                   labelText: 'Website URL',
                   prefixIcon: Icon(Iconsax.global),
                 ),
               ),
+              const SizedBox(height: ESizes.spaceBtwInputFields),
 
-              SizedBox(
-                height: ESizes.spaceBtwInputFields,
-              ),
-
-              /// Mobile Number
+              // Mobile Number
               TextFormField(
-                validator: (value) => EValidator.validatePhoneNumber(value),
+                controller: controller.phoneController,
+                validator: EValidator.validatePhoneNumber,
                 keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Mobile Number',
                   prefixIcon: Icon(Iconsax.call),
                 ),
               ),
+              const SizedBox(height: ESizes.spaceBtwInputFields),
 
-              SizedBox(
-                height: ESizes.spaceBtwInputFields,
-              ),
-
-              /// Map Location
+              // Map Location
+              // In the form widget
               Row(
                 children: [
                   Expanded(
                     child: TextFormField(
+                      controller: controller.mapLocationController,
                       readOnly: true,
-                      decoration: InputDecoration(
+                      validator: (value) =>
+                          EValidator.validateEmptyText('Map Location', value),
+                      decoration: const InputDecoration(
                         labelText: 'Map Location',
                         prefixIcon: Icon(Iconsax.location),
                       ),
                     ),
                   ),
-                  SizedBox(width: ESizes.spaceBtwItems),
+                  const SizedBox(width: ESizes.spaceBtwItems),
                   SizedBox(
                     width: 100,
                     child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Iconsax.map),
-                      label: Text('Choose'),
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                      ),
+                      onPressed: () async {
+                        final location =
+                            await Get.to(() => const MapPickerScreen());
+                        if (location != null) {
+                          controller.updateMapLocation(location);
+                        }
+                      },
+                      icon: const Icon(Iconsax.map),
+                      label: const Text('Choose'),
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: ESizes.spaceBtwInputFields * 1.5),
 
-              SizedBox(
-                height: ESizes.spaceBtwInputFields * 1.5,
-              ),
+              // Profile Image
+              Obx(() => Column(
+                    children: [
+                      EImageUploader(
+                        image: controller
+                                .selectedItem.value.profileImage.isNotEmpty
+                            ? controller.selectedItem.value.profileImage
+                            : EImages.onboardingImage1,
+                        imageType: controller
+                                .selectedItem.value.profileImage.isNotEmpty
+                            ? ImageType.network
+                            : ImageType.asset,
+                        width: 120,
+                        height: 120,
+                        onIconButtonPressed: controller.uploadItemImage,
+                      ),
+                      if (controller.imageUploading.value)
+                        const Padding(
+                          padding: EdgeInsets.only(top: ESizes.sm),
+                          child: CircularProgressIndicator(),
+                        ),
+                    ],
+                  )),
+              const SizedBox(height: ESizes.spaceBtwInputFields * 1.5),
 
-              /// Profile Image
-              Center(
-                child: Column(
-                  children: [
-                    Text('Profile Image',
-                        style: Theme.of(context).textTheme.bodyLarge),
-                    SizedBox(height: ESizes.spaceBtwItems),
-                    EImageUploader(
-                      imageType: ImageType.asset,
-                      image: EImages.onboardingImage1,
-                      width: 80,
-                      height: 80,
-                      icon: Iconsax.edit_2,
-                      onIconButtonPressed: () {},
+              // Branch Availability
+              Obx(() => DropdownButtonFormField<String>(
+                    value: controller.hasBranch.value ? 'Yes' : 'No',
+                    decoration: const InputDecoration(
+                      labelText: 'Branch Available',
+                      prefixIcon: Icon(Iconsax.building),
+                      border: OutlineInputBorder(),
                     ),
-                  ],
-                ),
-              ),
+                    items: const ['Yes', 'No'].map((String option) {
+                      return DropdownMenuItem<String>(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList(),
+                    onChanged: (value) =>
+                        controller.hasBranch.value = value == 'Yes',
+                  )),
+              const SizedBox(height: ESizes.spaceBtwInputFields),
 
-              SizedBox(
-                height: ESizes.spaceBtwInputFields * 1.5,
-              ),
-
-              /// Branch Availability
-              Text('Branch Available',
-                  style: Theme.of(context).textTheme.bodyLarge),
-              SizedBox(height: ESizes.spaceBtwItems / 2),
-              DropdownButtonFormField<String>(
-                value: branchAvailable,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Iconsax.building),
-                  border: OutlineInputBorder(),
-                ),
-                items: branchOptions.map((String option) {
-                  return DropdownMenuItem<String>(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    branchAvailable = newValue!;
-                  });
-                },
-              ),
-
-              SizedBox(
-                height: ESizes.spaceBtwInputFields,
-              ),
-
-              /// Creation Date
+              // Creation Date
               TextFormField(
                 readOnly: true,
-                initialValue: currentDate,
-                decoration: InputDecoration(
+                initialValue: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                decoration: const InputDecoration(
                   labelText: 'Creation Date',
                   prefixIcon: Icon(Iconsax.calendar),
                 ),
               ),
+              const SizedBox(height: ESizes.spaceBtwSections),
 
-              SizedBox(
-                height: ESizes.spaceBtwSections,
-              ),
-
-              /// Submit Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Create Item'),
-                ),
-              ),
-
-              SizedBox(
-                height: ESizes.spaceBtwInputFields * 2,
-              ),
+              // Submit Button
+              Obx(() => SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: controller.itemLoading.value
+                          ? null
+                          : () {
+                              if (formKey.currentState!.validate()) {
+                                controller.createItem();
+                              }
+                            },
+                      child: controller.itemLoading.value
+                          ? const CircularProgressIndicator()
+                          : const Text('Create Item'),
+                    ),
+                  )),
             ],
           ),
         ),

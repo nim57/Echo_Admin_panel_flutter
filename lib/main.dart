@@ -7,7 +7,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'features/home/category/create_categort/cload_cods/category_controller.dart';
-import 'features/home/category/create_categort/cload_cods/category_repository.dart';
+import 'features/home/category/create_categort/cload_cods/category_repository.dart'; // New import
+import 'features/home/manage_items/add Item/backend/item_controller.dart';
+import 'features/home/manage_items/add Item/backend/item_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -27,9 +29,12 @@ Future<void> main() async {
 
   // Initialize Repositories
   Get.put(AuthenticationRepository());
-  Get.put(CategoryRepository()); // Add category repository
+  Get.put(CategoryRepository());
+  Get.put(ItemRepository()); // New repository initialization
+
   // Initialize controllers
   Get.put(CategoryController());
+  Get.put(ItemController()); // New controller initialization
 
   // Main App Starts here ...
   runApp(const App());

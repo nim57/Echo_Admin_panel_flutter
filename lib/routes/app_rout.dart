@@ -43,7 +43,7 @@ class EAppRoute {
         middlewares: [ERouteMiddleware()]),
     GetPage(
         name: ERoutes.editCategory,
-        page: () => const EditCategortScreen(),
+        page: () =>  EditCategortScreen(categoryId: Get.arguments as String,),
         middlewares: [ERouteMiddleware()]),
 
     /// User

@@ -1,7 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:echo_admin_panel_flutter/Utils/constants/colors.dart';
 import 'package:echo_admin_panel_flutter/Utils/constants/image_Strings.dart';
-import 'package:echo_admin_panel_flutter/Utils/constants/sizes.dart';
 import 'package:echo_admin_panel_flutter/common/widgets/layouts/headers/i_rounded_image.dart';
 import 'package:echo_admin_panel_flutter/routes/route.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +41,10 @@ class CategoryTableSource extends DataTableSource {
         DataCell(Text(DateTime.now().toString())),
         DataCell(
           ETableActionButton(
-            onEditPressed: () =>
-                Get.toNamed(ERoutes.editCategory, arguments: category.id),
+            onEditPressed: () => Get.toNamed(
+              ERoutes.editCategory,
+              arguments: category.id, // Pass category ID
+            ),
             onDeletePressed: () => _controller.deleteCategory(category.id),
           ),
         ),

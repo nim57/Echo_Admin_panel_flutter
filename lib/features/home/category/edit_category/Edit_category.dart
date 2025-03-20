@@ -7,7 +7,7 @@ import 'responsive_screen/Edit_category_desktop_Screen.dart';
 import 'responsive_screen/Edit_category_mobile_screen.dart';
 
 class EditCategortScreen extends StatelessWidget {
-  const EditCategortScreen({super.key});
+  const EditCategortScreen({super.key, required String categoryId});
 
   @override
   Widget build(BuildContext context) {

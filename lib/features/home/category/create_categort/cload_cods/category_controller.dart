@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../Utils/constants/image_Strings.dart';
-import '../../../../../Utils/constants/sizes.dart';
 import '../../../../../Utils/popups/fullscreen_loader.dart';
 import '../../../../../common/widgets/loaders/lodaders.dart';
 import 'category_repository.dart';
@@ -32,19 +30,20 @@ class CategoryController extends GetxController {
   }
 
   /// Fetch all categories
- // In CategoryController
-Future<void> fetchAllCategories() async {
-  try {
-    categoryLoading.value = true;
-    final fetchedCategories = await categoryRepository.getAllCategories();
-    categories.assignAll(fetchedCategories);
-  } catch (e) {
-    categories.assignAll([]);
-    ELoaders.errorsnackBar(title: 'Load Failed', message: 'Failed to load categories');
-  } finally {
-    categoryLoading.value = false;
+  // In CategoryController
+  Future<void> fetchAllCategories() async {
+    try {
+      categoryLoading.value = true;
+      final fetchedCategories = await categoryRepository.getAllCategories();
+      categories.assignAll(fetchedCategories);
+    } catch (e) {
+      categories.assignAll([]);
+      ELoaders.errorsnackBar(
+          title: 'Load Failed', message: 'Failed to load categories');
+    } finally {
+      categoryLoading.value = false;
+    }
   }
-}
 
   /// Generate new category ID starting with 0001
   Future<String> _generateNewCategoryId() async {
@@ -181,4 +180,57 @@ Future<void> fetchAllCategories() async {
       Get.back();
     }
   }
+
+   Future<void> loadCategoryForEdit(String categoryId) async {
+    try {
+      categoryLoading.value = true;
+      final category = await categoryRepository.getCategoryById(categoryId);
+      selectedCategory.value = category;
+      nameController.text = category.name;
+    } catch (e) {
+      ELoaders.errorsnackBar(title: 'Error!', message: 'Failed to load category');
+    } finally {
+      categoryLoading.value = false;
+    }
+  }
+
+  Future<void> updateCategory() async {
+    try {
+      categoryLoading.value = true;
+      final updateData = <String, dynamic>{
+        'name': nameController.text.trim(),
+        if (selectedCategory.value.log != 
+            categories.firstWhere((c) => c.id == selectedCategory.value.id).log)
+          'log': selectedCategory.value.log,
+        'updatedAt': DateTime.now().toString(),
+      };
+
+      await categoryRepository.updateCategoryFields(
+        categoryId: selectedCategory.value.id,
+        fields: updateData,
+      );
+
+      // Update local list
+      final index = categories.indexWhere((c) => c.id == selectedCategory.value.id);
+      if (index != -1) {
+        categories[index] = categories[index].copyWith(
+          name: updateData['name'],
+          log: updateData['log'] ?? categories[index].log,
+        );
+      }
+
+      ELoaders.successSnackBar(
+        title: 'Success!',
+        message: 'Category updated successfully',
+      );
+      Get.back();
+    } catch (e) {
+      ELoaders.errorsnackBar(title: 'Error!', message: e.toString());
+    } finally {
+      categoryLoading.value = false;
+    }
+  }
+
+
+  
 }

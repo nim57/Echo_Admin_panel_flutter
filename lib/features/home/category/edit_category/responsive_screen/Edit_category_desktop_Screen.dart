@@ -3,9 +3,12 @@ import 'package:echo_admin_panel_flutter/features/home/category/edit_category/wi
 import 'package:echo_admin_panel_flutter/features/home/dashboard/widgets/breadcrumb_with_heading.dart';
 import 'package:echo_admin_panel_flutter/routes/route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class EditCategoryDesktopScreen extends StatelessWidget {
-  const EditCategoryDesktopScreen({super.key, });
+  const EditCategoryDesktopScreen({
+    super.key,
+  });
 
   //final CategoryMobileScreen category;
 
@@ -19,11 +22,18 @@ class EditCategoryDesktopScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // BreadCrumb
-              EBreadcrumbsWithHeading(heading: 'Update Category', breadcrumbItems: [ERoutes.category, 'Update Category'], returnToPreviousScreen: true),
-              SizedBox(height: ESizes.spaceBtwSections,),
+              EBreadcrumbsWithHeading(
+                  heading: 'Update Category',
+                  breadcrumbItems: [ERoutes.category, 'Update Category'],
+                  returnToPreviousScreen: true),
+              SizedBox(
+                height: ESizes.spaceBtwSections,
+              ),
 
-              // Form 
-              EditCategoryForm(),
+              // Form
+              EditCategoryForm(
+                categoryId: Get.arguments as String,
+              ),
             ],
           ),
         ),
