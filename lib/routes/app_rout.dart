@@ -14,6 +14,7 @@ import '../features/home/category/all_category/Category.dart';
 import '../features/home/category/create_categort/create_category.dart';
 import '../features/home/dashboard/dashboard_screen.dart';
 import '../features/home/manage_items/all_mamage_item/Item_manage/mamage_users.dart';
+import '../features/home/manage_items/edit_item/widgets/map_update.dart';
 import '../features/home/manage_user/screen_manage_users/mamage_users.dart';
 
 class EAppRoute {
@@ -43,7 +44,9 @@ class EAppRoute {
         middlewares: [ERouteMiddleware()]),
     GetPage(
         name: ERoutes.editCategory,
-        page: () =>  EditCategortScreen(categoryId: Get.arguments as String,),
+        page: () => EditCategortScreen(
+              categoryId: Get.arguments as String,
+            ),
         middlewares: [ERouteMiddleware()]),
 
     /// User
@@ -66,13 +69,20 @@ class EAppRoute {
 
     GetPage(
         name: ERoutes.editItem,
-        page: () => const ItemEdit(),
+        page: () => ItemEdit(
+              itemId: Get.arguments as String,
+            ),
         middlewares: [ERouteMiddleware()]),
 
     GetPage(
         name: ERoutes.pendingItem,
         page: () => const PendingItemScreen(),
         middlewares: [ERouteMiddleware()]),
+
+    GetPage(
+      name: ERoutes.mapPicker,
+      page: () => MapPickerScreenUpdate(initialLocation: Get.arguments ?? ''),
+    ),
 
     GetPage(
         name: ERoutes.managePost,

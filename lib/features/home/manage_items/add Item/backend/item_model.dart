@@ -84,7 +84,8 @@ class Item {
         website: _validateWebsite(json['website']),
         phoneNumber: _validatePhoneNumber(json['phoneNumber']),
         mapLocation: _validateStringField(json['mapLocation'], 'mapLocation'),
-        profileImage: _validateStringField(json['profileImage'], 'profileImage'),
+        profileImage:
+            _validateStringField(json['profileImage'], 'profileImage'),
         hasBranch: _validateBoolField(json['hasBranch'], 'hasBranch'),
         createdAt: _validateTimestampField(json['createdAt'], 'createdAt'),
         updatedAt: _validateTimestampField(json['updatedAt'], 'updatedAt'),
@@ -94,20 +95,23 @@ class Item {
     }
   }
 
-  /// Create Item from Firestore DocumentSnapshot
   factory Item.fromSnapshot(DocumentSnapshot snapshot) {
-    try {
-      if (!snapshot.exists) {
-        throw const FormatException('Document does not exist');
-      }
-
-      final data = snapshot.data() as Map<String, dynamic>;
-      return Item.fromJson(data).copyWith(id: snapshot.id);
-    } on FormatException catch (e) {
-      throw _ConversionException('Firestore format error: ${e.message}');
-    } catch (e) {
-      throw _ConversionException('Error creating Item from snapshot: $e');
-    }
+    final data = snapshot.data() as Map<String, dynamic>;
+    return Item(
+      id: snapshot.id,
+      categoryId: data['categoryId'] ?? '',
+      name: data['name'] ?? '',
+      tags: List<String>.from(data['tags'] ?? []),
+      description: data['description'] ?? '',
+      email: data['email'] ?? '',
+      website: data['website'] ?? '',
+      phoneNumber: data['phoneNumber'] ?? '',
+      mapLocation: data['mapLocation'] ?? '',
+      profileImage: data['profileImage'] ?? '',
+      hasBranch: data['hasBranch'] ?? false,
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
+      updatedAt: (data['updatedAt'] as Timestamp).toDate(),
+    );
   }
 
   /// Copy with method for immutability

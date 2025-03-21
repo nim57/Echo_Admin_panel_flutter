@@ -14,6 +14,7 @@ class ERoutes {
   static const createItem = '/createItem';
   static const editItem = '/editItem';
   static const pendingItem = '/PeingItems';
+  static const mapPicker = '/mapPicker';
 
   /// Manage Post
   static const managePost = '/managePost';

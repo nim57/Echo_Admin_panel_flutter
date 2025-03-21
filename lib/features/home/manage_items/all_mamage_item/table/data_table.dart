@@ -26,7 +26,7 @@ class ManageItemTable extends StatelessWidget {
         DataColumn2(label: Text('Acount Create Date')),
         DataColumn2(label: Text('Action')),
       ],
-      source: MamageItemRows(),
+      source: ItemTableSource(),
     );
   }
 }

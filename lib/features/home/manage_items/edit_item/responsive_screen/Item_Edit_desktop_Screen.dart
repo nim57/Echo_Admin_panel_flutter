@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../../../../Utils/constants/sizes.dart';
 import '../../../../../../routes/route.dart';
 import '../../../dashboard/widgets/breadcrumb_with_heading.dart';
-import '../../add Item/widgets/create_Item_form.dart';
-
+import '../widgets/update_item_form.dart';
 
 class ItemEditDesktopScreen extends StatelessWidget {
-  const ItemEditDesktopScreen({super.key});
+  const ItemEditDesktopScreen({super.key, required this.itemID});
+
+  final String itemID;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +27,11 @@ class ItemEditDesktopScreen extends StatelessWidget {
             const SizedBox(
               height: ESizes.spaceBtwSections,
             ),
-            
-             /// Form
-            CreateItemForm(),
 
+            /// Form
+            UpdateItemForm(
+              itemId: itemID,
+            ),
           ],
         ),
       ),

@@ -14,8 +14,8 @@ class EditCategortScreen extends StatelessWidget {
     final category = CategoryMobileScreen();
     return ESiteTemplate(
       desktop: EditCategoryDesktopScreen(
-        //category: category,
-      ),
+          //category: category,
+          ),
       tablet: EditCategoryTabletScreen(),
       mobile: EditCategoryMobileScreen(),
       useLayout: false,

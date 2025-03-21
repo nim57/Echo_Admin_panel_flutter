@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,12 +13,17 @@ import 'item_repository.dart';
 class ItemController extends GetxController {
   static ItemController get instance => Get.find();
 
+  // Repositories & Services
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final itemRepository = Get.put(ItemRepository());
+
+  // Observables
   final itemLoading = false.obs;
   final RxList<Item> items = <Item>[].obs;
   final RxList<String> categoryIds = <String>[].obs;
   final selectedItem = Item.empty().obs;
   final imageUploading = false.obs;
-  final itemRepository = Get.put(ItemRepository());
+  final hasBranch = false.obs;
 
   // Form Controllers
   final categoryIdController = TextEditingController();
@@ -28,21 +34,27 @@ class ItemController extends GetxController {
   final websiteController = TextEditingController();
   final phoneController = TextEditingController();
   final mapLocationController = TextEditingController();
-  final hasBranch = false.obs;
+
+  // Workers
+  late Worker _itemsWorker;
 
   @override
   void onInit() {
     super.onInit();
     fetchCategories();
     fetchAllItems();
+    _setupWorkers();
   }
 
-  /// Fetch all items
+  void _setupWorkers() {
+    _itemsWorker = ever(items, (_) => update());
+  }
+
+  /// Fetch all items with real-time updates
   Future<void> fetchAllItems() async {
     try {
       itemLoading.value = true;
-      final fetchedItems = await itemRepository.getAllItems();
-      items.assignAll(fetchedItems);
+      items.bindStream(itemRepository.getAllItemsStream());
     } catch (e) {
       items.assignAll([]);
       ELoaders.errorsnackBar(
@@ -68,6 +80,18 @@ class ItemController extends GetxController {
     } finally {
       itemLoading.value = false;
     }
+  }
+
+  /// Update map location
+  void updateMapLocation(String locationUrl) {
+    mapLocationController.text = locationUrl;
+    update();
+  }
+
+  /// Clear map location
+  void clearMapLocation() {
+    mapLocationController.clear();
+    update();
   }
 
   /// Create new item
@@ -245,16 +269,6 @@ class ItemController extends GetxController {
     }
   }
 
-  void updateMapLocation(String locationUrl) {
-    mapLocationController.text = locationUrl;
-    update();
-  }
-
-  void clearMapLocation() {
-    mapLocationController.clear();
-    update();
-  }
-
   /// Clear form fields
   void clearForm() {
     categoryIdController.clear();
@@ -280,5 +294,19 @@ class ItemController extends GetxController {
     phoneController.text = item.phoneNumber;
     mapLocationController.text = item.mapLocation;
     hasBranch.value = item.hasBranch;
+  }
+
+  @override
+  void onClose() {
+    _itemsWorker.dispose();
+    super.onClose();
+    categoryIdController.dispose();
+    nameController.dispose();
+    tagsController.dispose();
+    descriptionController.dispose();
+    emailController.dispose();
+    websiteController.dispose();
+    phoneController.dispose();
+    mapLocationController.dispose();
   }
 }
