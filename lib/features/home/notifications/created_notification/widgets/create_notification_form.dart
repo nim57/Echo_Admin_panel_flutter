@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -52,20 +53,37 @@ class _CreateNotificationFormState extends State<CreateNotificationForm> {
     );
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      final formData = {
-        'title': _titleController.text,
-        'description': _descriptionController.text,
-        'mediaPath': _mediaPath,
-        'mediaType': _mediaType,
-        'url': _isUrlNeeded ? _urlController.text : null,
-      };
+      try {
+        await FirebaseFirestore.instance.collection('notifications').add({
+          'title': _titleController.text,
+          'description': _descriptionController.text,
+          'mediaPath': _mediaPath,
+          'mediaType': _mediaType,
+          'url': _isUrlNeeded ? _urlController.text : null,
+          'timestamp': FieldValue.serverTimestamp(),
+          'read': false,
+        });
 
-      print(formData);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Notification created successfully')),
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Notification created successfully')),
+        );
+
+        // Clear form
+        _titleController.clear();
+        _descriptionController.clear();
+        _urlController.clear();
+        setState(() {
+          _mediaPath = null;
+          _mediaType = null;
+          _isUrlNeeded = false;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
     }
   }
 
@@ -81,95 +99,98 @@ class _CreateNotificationFormState extends State<CreateNotificationForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'Notification Title',
-              border: OutlineInputBorder(),
-            ),
-            validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter a title' : null,
-          ),
-          const SizedBox(height: 20),
-
-          // Media Upload Section
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.photo),
-                    label: const Text('Upload Image'),
-                    onPressed: () => _pickMedia(ImageSource.gallery),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.video_camera_back),
-                    label: const Text('Upload Video'),
-                    onPressed: () =>
-                        _pickMedia(ImageSource.gallery, isImage: false),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              _mediaPreview(),
-            ],
-          ),
-          const SizedBox(height: 20),
-
-          TextFormField(
-            controller: _descriptionController,
-            decoration: const InputDecoration(
-              labelText: 'Description',
-              border: OutlineInputBorder(),
-              alignLabelWithHint: true,
-            ),
-            maxLines: 4,
-            validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter a description' : null,
-          ),
-          const SizedBox(height: 20),
-
-          DropdownButtonFormField<bool>(
-            value: _isUrlNeeded,
-            decoration: const InputDecoration(
-              labelText: 'Need URL?',
-              border: OutlineInputBorder(),
-            ),
-            items: const [
-              DropdownMenuItem(value: false, child: Text('No Need')),
-              DropdownMenuItem(value: true, child: Text('Need')),
-            ],
-            onChanged: (value) => setState(() => _isUrlNeeded = value ?? false),
-          ),
-          const SizedBox(height: 20),
-
-          if (_isUrlNeeded)
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
             TextFormField(
-              controller: _urlController,
+              controller: _titleController,
               decoration: const InputDecoration(
-                labelText: 'URL',
+                labelText: 'Notification Title',
                 border: OutlineInputBorder(),
               ),
-              validator: (value) => _isUrlNeeded && (value?.isEmpty ?? true)
-                  ? 'Please enter a URL'
-                  : null,
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'Please enter a title' : null,
             ),
-          if (_isUrlNeeded) const SizedBox(height: 20),
-
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _submitForm,
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16)),
-              child: const Text('Create Notification'),
+            const SizedBox(height: 20),
+        
+            // Media Upload Section
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.photo),
+                      label: const Text('Upload Image'),
+                      onPressed: () => _pickMedia(ImageSource.gallery),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.video_camera_back),
+                      label: const Text('Upload Video'),
+                      onPressed: () =>
+                          _pickMedia(ImageSource.gallery, isImage: false),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                _mediaPreview(),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+        
+            TextFormField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(
+                labelText: 'Description',
+                border: OutlineInputBorder(),
+                alignLabelWithHint: true,
+              ),
+              maxLines: 4,
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'Please enter a description' : null,
+            ),
+            const SizedBox(height: 20),
+        
+            DropdownButtonFormField<bool>(
+              value: _isUrlNeeded,
+              decoration: const InputDecoration(
+                labelText: 'Need URL?',
+                border: OutlineInputBorder(),
+              ),
+              items: const [
+                DropdownMenuItem(value: false, child: Text('No Need')),
+                DropdownMenuItem(value: true, child: Text('Need')),
+              ],
+              onChanged: (value) => setState(() => _isUrlNeeded = value ?? false),
+            ),
+            const SizedBox(height: 20),
+        
+            if (_isUrlNeeded)
+              TextFormField(
+                controller: _urlController,
+                decoration: const InputDecoration(
+                  labelText: 'URL',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) => _isUrlNeeded && (value?.isEmpty ?? true)
+                    ? 'Please enter a URL'
+                    : null,
+              ),
+            if (_isUrlNeeded) const SizedBox(height: 20),
+        
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _submitForm,
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16)),
+                child: const Text('Create Notification'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
