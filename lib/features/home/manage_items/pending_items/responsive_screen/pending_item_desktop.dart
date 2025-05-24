@@ -36,7 +36,7 @@ class PendingItemDesktop extends StatelessWidget {
                   // Table Header
 
                   // Table
-                  PendinItemTable(),
+                  PendingItemTable()
                 ],
               ),
             )

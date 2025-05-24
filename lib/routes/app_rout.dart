@@ -13,9 +13,11 @@ import '../features/authentication/screens/login/login.dart';
 import '../features/home/category/all_category/Category.dart';
 import '../features/home/category/create_categort/create_category.dart';
 import '../features/home/dashboard/dashboard_screen.dart';
-import '../features/home/manage_items/all_mamage_item/Item_manage/mamage_users.dart';
+import '../features/home/manage_items/all_mamage_item/Item_manage/mamage_item.dart';
 import '../features/home/manage_items/edit_item/widgets/map_update.dart';
 import '../features/home/manage_user/screen_manage_users/mamage_users.dart';
+import '../features/home/notifications/created_notification/notification_Add.dart';
+import '../features/home/notifications/notificationsScreen.dart';
 
 class EAppRoute {
   static final List<GetPage> page = [
@@ -87,6 +89,16 @@ class EAppRoute {
     GetPage(
         name: ERoutes.managePost,
         page: () => const ManagePostScreen(),
+        middlewares: [ERouteMiddleware()]),
+
+    GetPage(
+        name: ERoutes.manageNotification,
+        page: () => const Notificationsscreen(),
+        middlewares: [ERouteMiddleware()]),
+
+    GetPage(
+        name: ERoutes.createNotification,
+        page: () => const NotificationAdd(),
         middlewares: [ERouteMiddleware()]),
   ];
 }

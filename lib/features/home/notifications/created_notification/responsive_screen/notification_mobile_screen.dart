@@ -1,0 +1,37 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../../Utils/constants/sizes.dart';
+
+import '../../../../../routes/route.dart';
+import '../../../dashboard/widgets/breadcrumb_with_heading.dart';
+
+class NotificationAddMobileScreen extends StatelessWidget {
+  const NotificationAddMobileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(ESizes.defaultSpace),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Breadurumbs
+            const EBreadcrumbsWithHeading(
+              heading: 'Add Notification',
+              breadcrumbItems: [ERoutes.manageItems, 'Add Notification'],
+              returnToPreviousScreen: true,
+            ),
+            const SizedBox(
+              height: ESizes.spaceBtwSections,
+            ),
+
+            /// Form
+            
+          ],
+        ),
+      ),
+    ));
+  }
+}

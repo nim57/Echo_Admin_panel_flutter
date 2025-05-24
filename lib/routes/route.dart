@@ -19,11 +19,16 @@ class ERoutes {
   /// Manage Post
   static const managePost = '/managePost';
 
+  /// Manage Notification
+  static const manageNotification = '/Notification';
+  static const createNotification = '/createNotification';
+
   static List sidebarMenuItems = [
     dashboard,
     user_manage,
     category,
     manageItems,
-    managePost
+    managePost,
+    manageNotification,
   ];
 }

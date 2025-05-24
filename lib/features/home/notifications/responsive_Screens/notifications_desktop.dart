@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../../../Utils/constants/sizes.dart';
-import '../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../routes/route.dart';
-import '../../../dashboard/widgets/breadcrumb_with_heading.dart';
+import '../../../../Utils/constants/sizes.dart';
+import '../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../routes/route.dart';
+import '../../category/all_category/widgets/table_header.dart';
+import '../../dashboard/widgets/breadcrumb_with_heading.dart';
 import '../tables/data_table.dart';
 
-class PendingItemTablet extends StatelessWidget {
-  const PendingItemTablet({super.key});
+class NotificationsDesktop extends StatelessWidget {
+  const NotificationsDesktop({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +22,8 @@ class PendingItemTablet extends StatelessWidget {
           children: [
             // Breadurumbs
             const EBreadcrumbsWithHeading(
-              heading: 'Pending Item',
-              breadcrumbItems: [ERoutes.manageItems, 'Pending Item'],
+              heading: 'Manage Notification',
+              breadcrumbItems: ['Manage Notification'],
               returnToPreviousScreen: false,
             ),
             const SizedBox(
@@ -34,9 +36,16 @@ class PendingItemTablet extends StatelessWidget {
               child: Column(
                 children: [
                   // Table Header
+                  CategoryTableHeader(
+                    buttonText: 'Add New Notification',
+                    onPressed: () => Get.toNamed(ERoutes.createNotification),
+                  ),
+                  SizedBox(
+                    height: ESizes.spaceBtwItems,
+                  ),
 
                   // Table
-                  PendingItemTable(),
+                  MamagePostTable(),
                 ],
               ),
             )

@@ -36,7 +36,7 @@ class PeingItemMobile extends StatelessWidget {
                   // Table Header
 
                   // Table
-                  PendinItemTable(),
+                  PendingItemTable(),
                 ],
               ),
             )

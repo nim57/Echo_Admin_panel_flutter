@@ -13,6 +13,8 @@ import 'features/home/manage_items/add Item/backend/item_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
+
+
   // Ensure widgets are initialized
   WidgetsFlutterBinding.ensureInitialized();
 

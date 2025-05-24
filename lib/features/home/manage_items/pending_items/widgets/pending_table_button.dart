@@ -1,43 +1,62 @@
-import 'package:echo_admin_panel_flutter/Utils/constants/sizes.dart';
+// pending_table_button.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PendingActionButton extends StatelessWidget {
-  const PendingActionButton(
-      {super.key,
-      this.onDeletePressed,
-      this.Accept = true,
-      this.Delete = true,
-      this.onacceptPressed});
+  final Function(String) onDeletePressed;
+  final VoidCallback onAcceptPressed;
+  final TextEditingController _rejectionController = TextEditingController();
 
-  final bool Accept;
-  final bool Delete;
+  PendingActionButton({
+    super.key,
+    required this.onDeletePressed,
+    required this.onAcceptPressed,
+  });
 
-  final VoidCallback? onacceptPressed;
-  final VoidCallback? onDeletePressed;
+  void _showRejectionDialog(BuildContext context) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Rejection Reason'),
+        content: TextField(
+          controller: _rejectionController,
+          decoration: const InputDecoration(
+            hintText: 'Enter reason for rejection...',
+            border: OutlineInputBorder(),
+          ),
+          maxLines: 3,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              final message = _rejectionController.text.trim();
+              if (message.isNotEmpty) {
+                Get.back();
+                onDeletePressed(message);
+              }
+            },
+            child: const Text('Send'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (Accept)
-          ElevatedButton(
-            onPressed: onacceptPressed,
-            child: Text(
-              'Accept',
-              style: TextStyle(fontSize: 10),
-            ),
-          ),
-        SizedBox(
-          width: ESizes.spaceBtwItems,
+        IconButton(
+          icon: const Icon(Icons.check, color: Colors.green),
+          onPressed: onAcceptPressed,
         ),
-        if (Delete)
-          ElevatedButton(
-            onPressed: onDeletePressed,
-            child: Text(
-              'Delete',
-              style: TextStyle(fontSize: 10),
-            ),
-          ),
+        IconButton(
+          icon: const Icon(Icons.close, color: Colors.red),
+          onPressed: () => _showRejectionDialog(context),
+        ),
       ],
     );
   }

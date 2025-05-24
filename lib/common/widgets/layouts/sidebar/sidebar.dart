@@ -84,6 +84,12 @@ class ESidebar extends StatelessWidget {
                       icon: Iconsax.edit,
                       itemName: 'Manage Post',
                     ),
+
+                    EMenuItem(
+                      route: ERoutes.manageNotification,
+                      icon: Iconsax.notification,
+                      itemName: 'Manage Notification',
+                    ),
                   ],
                 ),
               )
